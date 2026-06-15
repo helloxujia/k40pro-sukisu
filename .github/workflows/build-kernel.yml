@@ -15,8 +15,7 @@ jobs:
     permissions:
       contents: write
     name: Build by ${{ github.actor }}
-    runs-on: ubuntu-22.04
-    if: github.event.repository.owner.id == github.event.sender.id
+    runs-on: ubuntu-latest
     env:
       CCACHE_COMPILERCHECK: "%compiler% -dumpmachine; %compiler% -dumpversion"
       CCACHE_NOHASHDIR: "true"
