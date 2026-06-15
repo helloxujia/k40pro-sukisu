@@ -29,8 +29,7 @@ jobs:
           sudo apt update -qq
           sudo apt install -y -qq git ccache flex bison gperf build-essential zip \
             curl zlib1g-dev g++-multilib libxml2-utils bzip2 libbz2-dev liblz4-tool \
-            make libssl-dev bc libc6-dev-i386 lib32ncurses5-dev xsltproc unzip \
-            device-tree-compiler clang lld
+            make libssl-dev bc xsltproc unzip device-tree-compiler clang lld
           sudo apt upgrade -qq || true
           mkdir -p $GITHUB_WORKSPACE/kernel_workspace
 
