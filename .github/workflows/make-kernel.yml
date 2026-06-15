@@ -93,16 +93,18 @@ jobs:
       - name: Build kernel
         run: |
           cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
-          export PATH=${{ env.CLANG_PATH }}:$PATH
           export ARCH=${{ env.ARCH }}
-          make O=out ${{ env.KERNEL_CONFIG }}
-          make -j$(nproc) O=out \
-            CC=clang \
-            CROSS_COMPILE=$GITHUB_WORKSPACE/kernel_workspace/gcc-arm64/bin/aarch64-linux-android- \
-            CROSS_COMPILE_ARM32=$GITHUB_WORKSPACE/kernel_workspace/gcc-arm32/bin/arm-linux-androideabi- \
-            CLANG_TRIPLE=aarch64-linux-gnu- \
-            LLVM=1 \
-            LLVM_IAS=1
+          export CROSS_COMPILE=$GITHUB_WORKSPACE/kernel_workspace/gcc-arm64/bin/aarch64-linux-android-
+          export CROSS_COMPILE_ARM32=$GITHUB_WORKSPACE/kernel_workspace/gcc-arm32/bin/arm-linux-androideabi-
+          # Use Clang if available, otherwise GCC
+          if [ -d "$GITHUB_WORKSPACE/kernel_workspace/clang/bin" ]; then
+            export PATH=$GITHUB_WORKSPACE/kernel_workspace/clang/bin:$PATH
+            make O=out ${{ env.KERNEL_CONFIG }}
+            make -j$(nproc) O=out CC=clang CLANG_TRIPLE=aarch64-linux-gnu-
+          else
+            make O=out ${{ env.KERNEL_CONFIG }}
+            make -j$(nproc) O=out
+          fi
 
       - name: Check build result
         run: |
