@@ -1,0 +1,35 @@
+name: Test
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello
+        run: echo "Hello from GitHub Actions!"
+
+jobs:
+  test-perms:
+    name: "Test with write perms"
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello
+        run: echo "test permissions"
+  test-env:
+    name: "Test with env vars"
+    runs-on: ubuntu-latest
+    env:
+      CCACHE_COMPILERCHECK: "%compiler% -dumpmachine; %compiler% -dumpversion"
+    steps:
+      - name: Hello
+        run: echo "test env"
+  test-dispatch:
+    name: "Test workflow dispatch"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello
+        run: echo "test dispatch"
