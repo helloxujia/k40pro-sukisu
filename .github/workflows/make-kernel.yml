@@ -29,7 +29,8 @@ jobs:
           sudo apt update -qq
           sudo apt install -y -qq git ccache flex bison gperf build-essential zip \
             curl zlib1g-dev g++-multilib libxml2-utils bzip2 libbz2-dev liblz4-tool \
-            make libssl-dev bc xsltproc unzip device-tree-compiler clang lld
+            make libssl-dev bc xsltproc unzip device-tree-compiler \
+            gcc-aarch64-linux-gnu
           sudo apt upgrade -qq || true
           mkdir -p $GITHUB_WORKSPACE/kernel_workspace
 
@@ -71,8 +72,9 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
           export ARCH=arm64
+          export CROSS_COMPILE=aarch64-linux-gnu-
           make O=out ${{ env.KERNEL_CONFIG }}
-          make -j$(nproc) O=out CC=clang LD=ld.lld CLANG_TRIPLE=aarch64-linux-gnu-
+          make -j$(nproc) O=out
 
       - name: Check build result
         run: |
