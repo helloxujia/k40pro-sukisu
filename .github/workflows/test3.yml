@@ -1,0 +1,35 @@
+name: Debug build steps
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: "Release"
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  test1-inputs:
+    name: "Test with dispatch inputs"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello
+        run: echo "inputs test"
+  test2-env:
+    name: "Test with env vars"
+    runs-on: ubuntu-latest
+    env:
+      CCACHE_COMPILERCHECK: "%compiler% -dumpmachine; %compiler% -dumpversion"
+      CCACHE_NOHASHDIR: "true"
+    steps:
+      - name: Hello
+        run: echo "env test"
+  test3-perms:
+    name: "Test with contents write"
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello
+        run: echo "perms test"
