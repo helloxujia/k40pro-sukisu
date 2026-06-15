@@ -35,9 +35,12 @@ jobs:
           mkdir -p $GITHUB_WORKSPACE/kernel_workspace
 
       - name: Setup swap (10GB)
-        uses: pierotofy/set-swap-space@v1
-        with:
-          swap-size-gb: 10
+        run: |
+          sudo fallocate -l 10G /swapfile || true
+          sudo chmod 600 /swapfile || true
+          sudo mkswap /swapfile || true
+          sudo swapon /swapfile || true
+          free -h
 
       - name: Download Clang
         run: |
